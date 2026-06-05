@@ -9,6 +9,8 @@ void initializeCanvas(Canvas *c);
 void displayCanvas(Canvas *c);
 void drawRectangle(Canvas *c,int r,int col,int h,int w);
 void drawLine(Canvas *c,int r1,int c1,int r2,int c2);
+void drawTriangle(Canvas *c,int topRow,int topCol,int height);
+void drawCircle(Canvas *c,int centerRow,int centerCol,int radius);
 
 int main(){
     printf("2D Graphics Editor Project\n");
@@ -25,6 +27,10 @@ int main(){
     drawLine(&picture,1,2,1,30);
 
     drawLine(&picture,0,35,15,35);
+
+    drawTriangle(&picture,2,25,6);
+
+    drawCircle(&picture,14,32,4);
 
     printf("\n===== 2D GRAPHICS EDITOR =====\n\n");
 
@@ -79,6 +85,55 @@ void drawLine(Canvas *c,int r1,int c1,int r2,int c2){
         }
         for(i=r1;i<=r2;i++){
             c->pixels[i][c1]='*';
+        }
+    }
+    else{
+        int rowStep,colStep;
+        int row=r1;
+        int col=c1;
+        if(r2>r1){
+            rowStep=1;
+        }
+        else{
+            rowStep=-1;
+        }
+        if(c2>c1){
+            colStep=1;
+        }
+        else{
+            colStep=-1;
+        }
+        while(1){
+            c->pixels[row][col]='*';
+            if(row==r2 && col==c2){
+                break;
+            }
+            row+=rowStep;
+            col+=colStep;
+        }
+    }
+}
+void drawTriangle(Canvas *c,int topRow,int topCol,int height){
+    int bottomRow;
+    bottomRow=topRow+height-1;
+    drawLine(c,topRow,topCol,bottomRow,topCol-height+1);
+    drawLine(c,topRow,topCol,bottomRow,topCol+height-1);
+    drawLine(c,bottomRow,topCol-height+1,bottomRow,topCol+height-1);
+}
+void drawCircle(Canvas *c,int centerRow,int centerCol,int radius){
+    int row,col;
+    int distanceSquared;
+    int radiusSquared;
+    
+    radiusSquared=radius*radius;
+    for(row=0;row<c->rows;row++){
+        for(col=0;col<c->cols;col++){
+            distanceSquared=(row-centerRow)*(row-centerRow)+
+            (col-centerCol)*(col-centerCol);
+            if(distanceSquared>=radiusSquared-radius && 
+                distanceSquared<=radiusSquared+radius){
+                    c->pixels[row][col]='*';
+            }
         }
     }
 }
