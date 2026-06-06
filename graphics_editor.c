@@ -16,25 +16,70 @@ int main(){
     printf("2D Graphics Editor Project\n");
 
     Canvas picture;
+    int choice;
 
     picture.rows=20;
     picture.cols=40;
     
     initializeCanvas(&picture);
+    printf("Canvas initialized successfully.\n");
 
-    drawRectangle(&picture,3,5,10,20);
+    do{
+        printf("\n===== 2D GRAPHICS EDITOR =====\n");
+        printf("1. Add Rectangle\n");
+        printf("2. Add Line\n");
+        printf("3. Add Triangle\n");
+        printf("4. Add Circle\n");
+        printf("5. Display Picture\n");
+        printf("6. Exit\n");
 
-    drawLine(&picture,1,2,1,30);
+        printf("Enter choice: ");
+        scanf("%d",&choice);
 
-    drawLine(&picture,0,35,15,35);
-
-    drawTriangle(&picture,2,25,6);
-
-    drawCircle(&picture,14,32,4);
-
-    printf("\n===== 2D GRAPHICS EDITOR =====\n\n");
-
-    displayCanvas(&picture);
+        switch (choice)
+        {
+        case 1:{
+            int r,col,h,w;
+            printf("Enter row column height width: ");
+            scanf("%d%d%d%d",&r,&col,&h,&w);
+            drawRectangle(&picture,r,col,h,w);
+            break;
+        }
+        case 2:{
+            int r1,c1,r2,c2;
+            printf("Enter start row and column: ");
+            scanf("%d%d",&r1,&c1);
+            printf("Enter end row and column: ");
+            scanf("%d%d",&r2,&c2);
+            drawLine(&picture,r1,c1,r2,c2);
+            break;
+        }
+        case 3:{
+            int topRow,topCol,height;
+            printf("Enter top row,top column,height: ");
+            scanf("%d%d%d",&topRow,&topCol,&height);
+            drawTriangle(&picture,topRow,topCol,height);
+            break;
+        }
+        case 4:{
+            int centerRow,centerCol,radius;
+            printf("Enter center row,center column,radius: ");
+            scanf("%d%d%d",&centerRow,&centerCol,&radius);
+            drawCircle(&picture,centerRow,centerCol,radius);
+            break;
+        }
+        case 5:{
+            displayCanvas(&picture);
+            break;
+        }
+        case 6:{
+            printf("Exiting...\n");
+            break;
+        }
+        default:
+            printf("Invalid choice!\n");
+        }
+    }while(choice!=6);
 
     return 0;
 }
